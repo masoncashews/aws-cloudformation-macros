@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Stack for SGIngressTransformMacro.  Recommend naming the stack macro-SGIngressTransformMacro.
+
+Resources:
+  SGIngressTransformFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: python3.8
+      FunctionName: SGIngressTransformFunction
+      Handler: index.handler
+      Code:
+          ZipFile: |
+            def handler(event, context):
+              #Globals
+              params = event['params']
+              requestId = event['requestId']
+              try:
+                fragmentItems=[{}]
+                for subnet in params['AllowCidrs']:
+                  for tcpport in params['AllowPorts']:
+                      fragmentItems.append({'IpProtocol':'tcp', 'FromPort':tcpport,'ToPort':tcpport,'CidrIp':subnet})
+              
+                return {
+                    'requestId': requestId,
+                    'status': 'SUCCESS',
+                    'fragment': list(filter(None, fragmentItems)) #have to do the list because the way I initialize causes a leading empty dictionary in the list.
+                }
+              except Exception as e:
+                print(event)
+                print(e)
+                return {
+                    'requestId': requestId,
+                    'status': 'FAILURE',
+                    'fragment': ''
+                }
+      Role: !GetAtt SGIngressFunctionExecutionRole.Arn
+      
+
+  SGIngressFunctionExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: 'logs:*'
+                Resource: !GetAtt SGIngressTransformFunctionLog.Arn
+    
+  SGIngressTransformMacro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: SGIngressTransformMacro
+      Description: Creates Security Group Ingress rules
+      FunctionName: !GetAtt SGIngressTransformFunction.Arn
+
+  SGIngressTransformFunctionLog:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: "/aws/lambda/SGIngressTransformFunction" 
+      RetentionInDays: 7
+
+
+
+  
+
+  

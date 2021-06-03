@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Stack to show an example of the SG Ingress
+
+Parameters:
+  SourceIPV4Subnets:
+    Type: CommaDelimitedList
+    Description: Comma delimited list of IPV4 CIDR subnets that are allowed ingress by this security group.
+    Default: 0.0.0.0/0,127.0.0.1/32
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC To be be targeted.
+
+Resources:
+  TestSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "test-${AWS::StackName}-sg"
+      GroupDescription: Test Security Group
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        Fn::Transform:
+          Name: SGIngressTransformMacro
+          Parameters:
+            AllowPorts:
+              - 80
+              - 443
+            AllowCidrs: !Ref SourceIPV4Subnets
+
+
+
+  
+
+  

@@ -1,0 +1,11 @@
+{
+    "accountId": "123123123123123",
+    "fragment": {},
+    "transformId": "123123123123123::SGIngressTransform",
+    "requestId": "386e893b-33dd-4bcc-95c3-ced10b3127b3",
+    "region": "us-east-1",
+    "params": {
+        "AllowPorts": [80, 443],
+        "AllowCidrs": ["0.0.0.0/0", "1.2.3.4/32"]
+    }
+}
