@@ -1,0 +1,13 @@
+{
+    "RequestType": "Create",
+    "ServiceToken": "arn:aws:lambda:us-east-1:111111111111:function:ALBListenerRuleAutoPriorityFunction",
+    "ResponseURL": "https://cloudformation-custom-resource-response-useast1.s3.amazonaws.com/",
+    "StackId": "arn:aws:cloudformation:us-east-1:111111111111:stack/3434/dbffc650-d45a-11eb-8b82-0e6115325dc3",
+    "RequestId": "71a7068d-0b69-4161-b831-6cdd478cdc21",
+    "LogicalResourceId": "ALBListenerRuleAutoPriorityResource",
+    "ResourceType": "Custom::ALBListenerRuleAutoPriorityResource",
+    "ResourceProperties": {
+      "ServiceToken": "arn:aws:lambda:us-east-1:111111111111:function:ALBListenerRuleAutoPriorityFunction",
+      "ListenerArn": "arn:aws:elasticloadbalancing:us-east-1:111111111111:listener/app/somealb/cec89ab461dd24d4/a4288efcbf6866dd"
+    }
+  }
