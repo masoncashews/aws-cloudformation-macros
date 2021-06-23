@@ -1,6 +1,6 @@
-# ALB Listener Rule Weight (ALBListenerRuleAutoWeightTransform)
+# ALB Listener Rule Auto Priority Custom Resouce (ALBListenerRuleAutoPriority)
 
-This macro automatically sets the weight of a rule when adding to an existing Application Load Balancer Listener.
+This custom resource allows you to get the next available rule priority for a given load balancer listener.
 
 &nbsp;
 &nbsp;
